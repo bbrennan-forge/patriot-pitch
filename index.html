@@ -126,6 +126,35 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 @media (max-width:860px){.form-grid{grid-template-columns:1fr}}
 .aside{position:sticky;top:90px;align-self:start;display:flex;flex-direction:column;gap:16px}
 .aside .note{color:var(--muted);font-size:15px}
+form{display:flex;flex-direction:column;gap:22px}
+fieldset{border:0;padding:0;margin:0;display:flex;flex-direction:column;gap:16px}
+legend{font:700 24px/1 var(--font-display);text-transform:uppercase;padding:0;margin-bottom:12px;color:var(--red)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:560px){.row{grid-template-columns:1fr}}
+.field{display:flex;flex-direction:column;gap:6px}
+label,.lbl{font-weight:600;font-size:15px}
+.hint{color:var(--muted);font-size:13px;font-weight:400}
+input[type=text],input[type=email],select,textarea{font:400 16px/1.4 var(--font-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:11px 12px;width:100%}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--red);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--red) 25%,transparent)}
+.count{font-family:var(--font-mono);font-size:12px;color:var(--muted);text-align:right}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}
+.choice span{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:4px;background:var(--paper);font-size:15px}
+.choice input:checked + span{border-color:var(--red);background:var(--tint);color:var(--red);font-weight:700}
+.choice input:focus-visible + span{outline:3px solid var(--red);outline-offset:2px}
+.dates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:560px){.dates{grid-template-columns:repeat(2,1fr)}}
+.dates .choice span{display:block;text-align:center;font-family:var(--font-display);font-weight:700;font-size:20px;text-transform:uppercase}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.check input{width:20px;height:20px;margin-top:2px;accent-color:var(--red);flex:none}
+.err{color:var(--red);font-size:14px;font-weight:600;min-height:0}
+.status{padding:14px 16px;border-radius:4px;font-weight:600}
+.status.info{background:var(--paper);border:1px solid var(--line);color:var(--muted)}
+.status.good{background:color-mix(in srgb,var(--ok) 12%,transparent);color:var(--ok);border:1px solid color-mix(in srgb,var(--ok) 40%,transparent)}
+.status.bad{background:var(--tint);color:var(--red);border:1px solid var(--red)}
+.hidden{display:none!important}
 .done{border:2px solid var(--ok);border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:12px}
 .done h3{color:var(--ok)}
 
@@ -138,6 +167,8 @@ section{padding:72px 0;border-top:1px solid var(--line)}
 .path .s{color:var(--muted);font-size:13px}
 @media (max-width:860px){.path{grid-template-columns:1fr 1fr 1fr;row-gap:20px}}
 @media (max-width:480px){.path{grid-template-columns:1fr 1fr}}
+.notify{display:flex;flex-direction:row;gap:10px;flex-wrap:wrap;margin-top:28px;align-items:flex-end}
+.notify .field{flex:1 1 260px}
 
 /* timeline */
 .tl{display:grid;grid-template-columns:120px 1fr;margin:0;border-left:0}
@@ -162,6 +193,19 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-con
 footer img{width:220px;background:#fff;padding:8px;border-radius:4px}
 footer p{color:var(--muted);font-size:15px}
 
+/* admin */
+.admin{background:var(--paper);border-top:2px solid var(--red)}
+.admin-bar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.meter{display:flex;align-items:baseline;gap:10px}
+.meter .n{font:900 56px/1 var(--font-display);color:var(--red);font-variant-numeric:tabular-nums}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-weight:700;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+td.idea{min-width:260px;max-width:420px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.pill.warn{background:var(--tint);color:var(--red)}
 
 /* logos */
 .brand .ei{height:32px;width:auto;display:block}
@@ -273,7 +317,7 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
       </div>
       <div class="steps">
         <ol>
-          <li><div class="when">Nov 30</div><div class="what">Apply</div><div class="how">Fill out the short application. It takes about 5 minutes.</div></li>
+          <li><div class="when">Nov 30</div><div class="what">Apply</div><div class="how">Fill out the form below. It takes about 5 minutes.</div></li>
           <li><div class="when">Dec 1</div><div class="what">Hear back</div><div class="how">Decisions go to your CDS email and your parent's email.</div></li>
           <li><div class="when">Dec 2</div><div class="what">Sprint 01</div><div class="how">Show up to the first workshop. Bring your idea or come ready to join a team.</div></li>
           <li><div class="when">Dec 8</div><div class="what">Lock your spot</div><div class="how">Pay $75 in Veracross. Unpaid spots go to the waitlist before Sprint 02.</div></li>
@@ -291,17 +335,93 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
     <div class="wrap form-grid">
       <div class="aside">
         <h2>Apply for Design Sprints</h2>
-        <p class="note">Deadline: <b>Monday, November 30, 11:59 pm</b>. One application per student. You can come back and update your answers until the deadline.</p>
+        <p class="note">Deadline: <b>Monday, November 30, 11:59 pm</b>. One application per student. Need to change something after you submit? Email Mr. Brennan.</p>
         <p class="note">No idea yet? Apply anyway. Tell us a problem you care about and choose "Open to joining a team."</p>
-        
+        <div id="appStatus" class="status info" role="status">Applications are open until Monday, November 30 at 11:59 pm.</div>
       </div>
 
       <div>
-        <div class="done" style="border-color:var(--red)">
-          <h3 style="color:var(--red)">Apply on the CDS application page</h3>
-          <p>The application opens on claude.ai. Sign in with your CDS account, answer 12 short questions, and come back to update your answers any time before November 30.</p>
-          <p class="hint">You'll share your idea, why you want a spot, and which of the six sprint dates you can attend.</p>
-          <div><a class="btn" href="https://claude.ai/artifact/RNHTwXNr3cCs84qRLxaVaZ">Open the application</a></div>
+        <form id="appForm" novalidate>
+          <fieldset>
+            <legend>About you</legend>
+            <div class="row">
+              <div class="field"><label for="f-name">First and last name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+              <div class="field"><label for="f-email">CDS email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@carrollwooddayschool.org" required></div>
+            </div>
+            <div class="row">
+              <div class="field"><label for="f-grade">Grade</label>
+                <select id="f-grade" name="grade" required>
+                  <option value="">Choose…</option>
+                  <option>8</option><option>9</option><option>10</option><option>11</option><option>12</option>
+                </select>
+              </div>
+              <div class="field"><span class="lbl" id="team-lbl">Applying as</span>
+                <div class="choices" role="radiogroup" aria-labelledby="team-lbl">
+                  <label class="choice"><input type="radio" name="team" value="Solo" id="t-solo" required><span>Solo</span></label>
+                  <label class="choice"><input type="radio" name="team" value="Team" id="t-team"><span>Team</span></label>
+                  <label class="choice"><input type="radio" name="team" value="Open to joining a team" id="t-open"><span>Open to a team</span></label>
+                </div>
+              </div>
+            </div>
+            <div class="field hidden" id="mates-wrap"><label for="f-mates">Teammates' names <span class="hint">Each teammate should also apply.</span></label><input id="f-mates" name="teammates" type="text"></div>
+            <div class="row">
+              <div class="field"><label for="f-pname">Parent/guardian name</label><input id="f-pname" name="parentName" type="text" required></div>
+              <div class="field"><label for="f-pemail">Parent/guardian email</label><input id="f-pemail" name="parentEmail" type="email" required></div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your idea</legend>
+            <div class="field">
+              <label for="f-idea">Your idea in one or two sentences: what problem, and for whom? <span class="hint">"Still exploring" is fine. Tell us a problem you care about.</span></label>
+              <textarea id="f-idea" name="idea" maxlength="300" required></textarea>
+              <div class="count" data-for="f-idea">0 / 300</div>
+            </div>
+            <div class="field">
+              <label for="f-why">Why do you want a sprint spot?</label>
+              <textarea id="f-why" name="why" maxlength="500" required></textarea>
+              <div class="count" data-for="f-why">0 / 500</div>
+            </div>
+            <div class="field">
+              <label for="f-exp">Anything you've built, sold, made or led before? <span class="hint">Optional. A sentence or a link.</span></label>
+              <input id="f-exp" name="experience" type="text">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Commitment</legend>
+            <div class="field">
+              <span class="lbl" id="dates-lbl">Check every sprint you can attend</span>
+              <div class="dates" role="group" aria-labelledby="dates-lbl">
+                <label class="choice"><input type="checkbox" name="dates" value="Dec 2" id="d1"><span>Dec 2</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Dec 9" id="d2"><span>Dec 9</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 6" id="d3"><span>Jan 6</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 13" id="d4"><span>Jan 13</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 20" id="d5"><span>Jan 20</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 27" id="d6"><span>Jan 27</span></label>
+              </div>
+              <p class="hint" id="dates-note">Spots go first to students who can make all six.</p>
+            </div>
+            <label class="check" for="f-attend"><input type="checkbox" id="f-attend" name="attendAck" required><span>I understand spots are limited, and missing more than one sprint may give my spot to a student on the waitlist.</span></label>
+            <label class="check" for="f-fee"><input type="checkbox" id="f-fee" name="feeAck" required><span>I understand the $75 fee is paid in Veracross only if I'm accepted, by December 8.</span></label>
+            <div class="field">
+              <span class="lbl" id="pitch-lbl">Are you planning to apply to Patriot Pitch?</span>
+              <div class="choices" role="radiogroup" aria-labelledby="pitch-lbl">
+                <label class="choice"><input type="radio" name="pitchPlan" value="Yes" id="p-yes"><span>Yes</span></label>
+                <label class="choice"><input type="radio" name="pitchPlan" value="Maybe" id="p-maybe"><span>Maybe</span></label>
+                <label class="choice"><input type="radio" name="pitchPlan" value="Not this year" id="p-no"><span>Not this year</span></label>
+              </div>
+            </div>
+          </fieldset>
+
+          <p class="err" id="formErr" role="alert"></p>
+          <div><button class="btn" type="submit" id="submitBtn">Submit application</button></div>
+        </form>
+
+        <div class="done hidden" id="doneBox" tabindex="-1">
+          <h3>Application received</h3>
+          <p id="doneText">Thanks. Decisions go out Tuesday, December 1 to your CDS email.</p>
+          <p class="hint">Need to change something? Email Mr. Brennan. A confirmation of your answers is shown above.</p>
         </div>
       </div>
     </div>
@@ -321,7 +441,11 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
         <div><div class="d">Feb 27</div><div class="t">Finals bootcamp</div><div class="s">Saturday · finalists</div></div>
         <div class="final"><div class="d">Mar 10</div><div class="t">Finals</div><div class="s">Wednesday · full day</div></div>
       </div>
-      <p style="margin-top:28px">Want an email when the Pitch application opens? <a href="https://claude.ai/artifact/RNHTwXNr3cCs84qRLxaVaZ#pitch">Add yourself on the CDS application page</a>.</p>
+      <form class="notify" id="notifyForm" novalidate>
+        <div class="field"><label for="n-email">Get an email when the Pitch application opens</label><input id="n-email" type="email" placeholder="you@carrollwooddayschool.org" required></div>
+        <button class="btn" type="submit" id="notifyBtn">Notify me</button>
+      </form>
+      <p class="err" id="notifyMsg" role="status" style="margin-top:10px"></p>
     </div>
   </section>
 
@@ -363,43 +487,137 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
   </div>
 </footer>
 
-<script>
-(function(){
-  document.getElementById("sealTop").src = document.getElementById("sealFoot").src;
-  const DEADLINE = new Date("2026-12-01T04:59:00Z");
-  const $ = id => document.getElementById(id);
-  const ms = DEADLINE - new Date();
-  if (ms <= 0){ $("daysLeft").textContent = "0"; $("daysLabel").textContent = "Sprint applications are closed"; }
-  else { const d = Math.ceil(ms / 86400000); $("daysLeft").textContent = d; $("daysLabel").textContent = d === 1 ? "day left to apply" : "days left to apply"; }
-  const events = [
-    ["2026-11-30","Nov 30","Design Sprint applications due","11:59 pm"],
-    ["2026-12-01","Dec 1","Sprint decisions emailed",""],
-    ["2026-12-02","Dec 2","Design Sprint 01",""],
-    ["2026-12-08","Dec 8","$75 Veracross payment due","Unpaid spots go to the waitlist"],
-    ["2026-12-09","Dec 9","Design Sprint 02",""],
-    ["2027-01-06","Jan 6","Design Sprint 03",""],
-    ["2027-01-13","Jan 13","Design Sprint 04",""],
-    ["2027-01-20","Jan 20","Design Sprint 05",""],
-    ["2027-01-27","Jan 27","Design Sprint 06","Last sprint"],
-    ["2027-01-31","Jan 31","Patriot Pitch applications due",""],
-    ["2027-02-03","Feb 3","Patriot Pitch decisions",""],
-    ["2027-02-13","Feb 13","Semifinal bootcamp",""],
-    ["2027-02-20","Feb 20","Semifinals","Wagner Entrepreneurial Center, parents welcome"],
-    ["2027-02-27","Feb 27","Finals bootcamp",""],
-    ["2027-03-10","Mar 10","Patriot Pitch Finals","Full day"]
-  ];
-  const today = new Date(); today.setHours(0,0,0,0);
-  let marked = false; const tl = $("tl");
-  events.forEach(([iso,label,title,sub])=>{
-    const past = new Date(iso+"T23:59:00") < today;
-    const cls = past ? "past" : (!marked ? (marked = true, "next") : "");
-    const a = document.createElement("dt"); a.textContent = label;
-    const b = document.createElement("dd"); const bb = document.createElement("b"); bb.textContent = title; b.appendChild(bb);
-    if (sub){ const sp = document.createElement("span"); sp.textContent = sub; b.appendChild(sp); }
-    if (cls){ a.className = cls; b.className = cls; }
-    tl.append(a,b);
-  });
-})();
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCdpup7Lpydw3RAAHGPjfSTwiuWrdXb8a8",
+  authDomain: "cds-patriot-pitch.firebaseapp.com",
+  projectId: "cds-patriot-pitch",
+  storageBucket: "cds-patriot-pitch.firebasestorage.app",
+  messagingSenderId: "447871186022",
+  appId: "1:447871186022:web:27ed37a3991b6f5434a9a7"
+});
+const db = getFirestore(app);
+
+const DEADLINE = new Date("2026-12-01T04:59:00Z"); // Nov 30, 11:59 pm Eastern
+const $ = id => document.getElementById(id);
+$("sealTop").src = $("sealFoot").src;
+
+// countdown
+const msLeft = DEADLINE - new Date();
+const open = msLeft > 0;
+if (!open){ $("daysLeft").textContent = "0"; $("daysLabel").textContent = "Sprint applications are closed"; }
+else { const d = Math.ceil(msLeft / 86400000); $("daysLeft").textContent = d; $("daysLabel").textContent = d === 1 ? "day left to apply" : "days left to apply"; }
+
+// timeline
+const events = [
+  ["2026-11-30","Nov 30","Design Sprint applications due","11:59 pm"],
+  ["2026-12-01","Dec 1","Sprint decisions emailed",""],
+  ["2026-12-02","Dec 2","Design Sprint 01",""],
+  ["2026-12-08","Dec 8","$75 Veracross payment due","Unpaid spots go to the waitlist"],
+  ["2026-12-09","Dec 9","Design Sprint 02",""],
+  ["2027-01-06","Jan 6","Design Sprint 03",""],
+  ["2027-01-13","Jan 13","Design Sprint 04",""],
+  ["2027-01-20","Jan 20","Design Sprint 05",""],
+  ["2027-01-27","Jan 27","Design Sprint 06","Last sprint"],
+  ["2027-01-31","Jan 31","Patriot Pitch applications due",""],
+  ["2027-02-03","Feb 3","Patriot Pitch decisions",""],
+  ["2027-02-13","Feb 13","Semifinal bootcamp",""],
+  ["2027-02-20","Feb 20","Semifinals","Wagner Entrepreneurial Center, parents welcome"],
+  ["2027-02-27","Feb 27","Finals bootcamp",""],
+  ["2027-03-10","Mar 10","Patriot Pitch Finals","Full day"]
+];
+const today = new Date(); today.setHours(0,0,0,0);
+let marked = false; const tl = $("tl");
+events.forEach(([iso,label,title,sub])=>{
+  const past = new Date(iso+"T23:59:00") < today;
+  const cls = past ? "past" : (!marked ? (marked = true, "next") : "");
+  const a = document.createElement("dt"); a.textContent = label;
+  const b = document.createElement("dd"); const bb = document.createElement("b"); bb.textContent = title; b.appendChild(bb);
+  if (sub){ const sp = document.createElement("span"); sp.textContent = sub; b.appendChild(sp); }
+  if (cls){ a.className = cls; b.className = cls; }
+  tl.append(a,b);
+});
+
+// form helpers
+const form = $("appForm");
+document.querySelectorAll(".count").forEach(c=>{
+  const t = $(c.dataset.for); const upd = ()=>{ c.textContent = t.value.length + " / " + t.maxLength; };
+  t.addEventListener("input", upd); upd();
+});
+form.querySelectorAll('input[name=team]').forEach(r=>r.addEventListener("change",()=>{
+  $("mates-wrap").classList.toggle("hidden", !$("t-team").checked);
+}));
+const dateBoxes = [...form.querySelectorAll('input[name=dates]')];
+dateBoxes.forEach(b=>b.addEventListener("change",()=>{
+  const n = dateBoxes.filter(x=>x.checked).length;
+  $("dates-note").textContent = n === 6 ? "All six. That's what we're looking for." : "Spots go first to students who can make all six. You've checked " + n + ".";
+}));
+function collect(){
+  const v = id => $(id).value.trim();
+  const radio = n => (form.querySelector('input[name='+n+']:checked')||{}).value || "";
+  return {
+    name: v("f-name"), email: v("f-email").toLowerCase(), grade: v("f-grade"),
+    team: radio("team"), teammates: $("t-team").checked ? v("f-mates") : "",
+    parentName: v("f-pname"), parentEmail: v("f-pemail").toLowerCase(),
+    idea: v("f-idea"), why: v("f-why"), experience: v("f-exp"),
+    dates: dateBoxes.filter(x=>x.checked).map(x=>x.value),
+    attendAck: $("f-attend").checked, feeAck: $("f-fee").checked,
+    pitchPlan: radio("pitchPlan")
+  };
+}
+const emailOk = s => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s);
+function validate(d){
+  if (!d.name) return ["f-name","Add your first and last name."];
+  if (!emailOk(d.email)) return ["f-email","Add your CDS email address."];
+  if (!d.grade) return ["f-grade","Choose your grade."];
+  if (!d.team) return ["t-solo","Choose solo, team, or open to a team."];
+  if (d.team === "Team" && !d.teammates) return ["f-mates","List your teammates' names."];
+  if (!d.parentName) return ["f-pname","Add a parent or guardian name."];
+  if (!emailOk(d.parentEmail)) return ["f-pemail","Add a parent or guardian email."];
+  if (!d.idea) return ["f-idea","Tell us your idea, or a problem you care about."];
+  if (!d.why) return ["f-why","Tell us why you want a sprint spot."];
+  if (!d.dates.length) return ["d1","Check the sprint dates you can attend."];
+  if (!d.attendAck) return ["f-attend","Check the attendance agreement."];
+  if (!d.feeAck) return ["f-fee","Check the fee agreement."];
+  return null;
+}
+function setStatus(kind, text){ const s = $("appStatus"); s.className = "status " + kind; s.textContent = text; }
+
+if (!open){
+  form.querySelectorAll("input,select,textarea,button").forEach(e=>e.disabled = true);
+  setStatus("info","Sprint applications closed on November 30. You can still get notified about Patriot Pitch below.");
+}
+
+let sending = false;
+form.addEventListener("submit", async e=>{
+  e.preventDefault(); $("formErr").textContent = "";
+  if (!open || sending) return;
+  const d = collect(); const bad = validate(d);
+  if (bad){ $("formErr").textContent = bad[1]; $(bad[0]).focus(); return; }
+  sending = true; $("submitBtn").disabled = true; $("submitBtn").textContent = "Submitting…";
+  try {
+    await addDoc(collection(db, "applications"), Object.assign({}, d, { submittedAt: serverTimestamp() }));
+    form.classList.add("hidden"); $("doneBox").classList.remove("hidden");
+    $("doneText").textContent = "Thanks, " + (d.name.split(" ")[0] || "there") + ". We have your application. Decisions go out Tuesday, December 1 to " + d.email + ".";
+    setStatus("good", "Application received.");
+    $("doneBox").focus();
+  } catch(err){
+    console.error(err);
+    $("formErr").textContent = "Your application didn't go through. Check your connection and try again, or email Mr. Brennan.";
+  } finally { sending = false; $("submitBtn").disabled = false; $("submitBtn").textContent = "Submit application"; }
+});
+
+$("notifyForm").addEventListener("submit", async e=>{
+  e.preventDefault(); const em = $("n-email").value.trim().toLowerCase(); const m = $("notifyMsg");
+  if (!emailOk(em)){ m.textContent = "Add an email address."; $("n-email").focus(); return; }
+  $("notifyBtn").disabled = true;
+  try { await addDoc(collection(db, "pitchNotify"), { email: em, at: serverTimestamp() }); m.style.color = "var(--ok)"; m.textContent = "You're on the list. We'll email " + em + " when the application opens."; $("n-email").value = ""; }
+  catch(err){ console.error(err); m.textContent = "That didn't save. Try again in a moment."; }
+  finally { $("notifyBtn").disabled = false; }
+});
 </script>
 </body>
 </html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Design Sprint Applications</title>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@900&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f4f4f2;--surface:#fff;--ink:#141414;--muted:#5d5d5a;--line:#d9d9d4;--red:#c8102e;--tint:#fbeaec;--ok:#1f7a3d;color-scheme:light}
+@media (prefers-color-scheme: dark){:root{--paper:#121212;--surface:#1c1c1c;--ink:#f1f1ee;--muted:#a8a8a2;--line:#333331;--red:#ef3b52;--tint:#2a1518;--ok:#5cc47f;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 15px/1.5 "Public Sans",system-ui,sans-serif}
+.wrap{max-width:1400px;margin:0 auto;padding:32px 20px}
+h1{font:900 48px/1 "Big Shoulders Display","Arial Narrow",sans-serif;text-transform:uppercase;margin:0}
+.bar{display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between;margin-bottom:20px}
+.meter{display:flex;gap:24px;flex-wrap:wrap}
+.meter div{display:flex;flex-direction:column}
+.meter b{font:900 40px/1 "Big Shoulders Display",sans-serif;color:var(--red);font-variant-numeric:tabular-nums}
+.meter span{color:var(--muted);font-size:13px}
+.btn{border:2px solid var(--red);background:var(--red);color:#fff;font:700 15px/1 "Public Sans",sans-serif;padding:11px 18px;border-radius:4px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.msg{color:var(--muted);margin:8px 0 16px;min-height:1.5em}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+td.long{min-width:240px;max-width:380px}
+.hint{color:var(--muted);font-size:13px}
+.pill{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.ok{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok)}
+.pill.warn{background:var(--tint);color:var(--red)}
+.dup{background:var(--tint)}
+.hidden{display:none!important}
+.gate{max-width:480px;margin:80px auto;text-align:center;display:flex;flex-direction:column;gap:16px;align-items:center}
+</style>
+</head>
+<body>
+<div class="gate" id="gate">
+  <h1>Applications</h1>
+  <p class="hint">Only the program director can view Design Sprint applications. Sign in with your school Google account.</p>
+  <button class="btn" id="signin" type="button">Sign in with Google</button>
+  <p class="msg" id="gateMsg" role="status"></p>
+</div>
+
+<div class="wrap hidden" id="app">
+  <div class="bar">
+    <h1>Design Sprint Applications</h1>
+    <div class="btns">
+      <button class="btn" id="copyCsv" type="button">Copy as CSV</button>
+      <button class="btn ghost" id="signout" type="button">Sign out</button>
+    </div>
+  </div>
+  <div class="meter">
+    <div><b id="nApps">0</b><span>applications for 40 spots</span></div>
+    <div><b id="nSix">0</b><span>can make all six sprints</span></div>
+    <div><b id="nPitch">0</b><span>want Patriot Pitch updates</span></div>
+  </div>
+  <p class="msg" id="msg" role="status"></p>
+  <div class="tbl">
+    <table>
+      <thead><tr><th>Submitted</th><th>Name</th><th>Grade</th><th>Email</th><th>As</th><th>Sprints</th><th>Idea</th><th>Why</th><th>Pitch?</th><th>Parent</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="10">Loading…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="hint" style="margin-top:12px">Rows highlighted in pink are repeat submissions from the same email. The newest one is listed first.</p>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const app = initializeApp({
+  apiKey: "AIzaSyCdpup7Lpydw3RAAHGPjfSTwiuWrdXb8a8",
+  authDomain: "cds-patriot-pitch.firebaseapp.com",
+  projectId: "cds-patriot-pitch",
+  storageBucket: "cds-patriot-pitch.firebasestorage.app",
+  messagingSenderId: "447871186022",
+  appId: "1:447871186022:web:27ed37a3991b6f5434a9a7"
+});
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
+let rows = [], unsubs = [];
+
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const when = t => t && t.toDate ? t.toDate().toLocaleString([], {month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}) : "";
+
+function render(){
+  $("nApps").textContent = new Set(rows.map(r=>r.email)).size;
+  $("nSix").textContent = rows.filter((r,i)=>rows.findIndex(x=>x.email===r.email)===i && (r.dates||[]).length===6).length;
+  if (!rows.length){ $("rows").innerHTML = '<tr><td colspan="10">No applications yet.</td></tr>'; return; }
+  const seen = new Set();
+  $("rows").innerHTML = rows.map(r=>{
+    const dup = seen.has(r.email); seen.add(r.email);
+    const n = (r.dates||[]).length;
+    return "<tr"+(dup?" class='dup'":"")+"><td>"+esc(when(r.submittedAt))+"</td><td><b>"+esc(r.name)+"</b></td><td>"+esc(r.grade)+"</td><td>"+esc(r.email)+"</td><td>"+esc(r.team)+(r.teammates?"<br><span class='hint'>"+esc(r.teammates)+"</span>":"")+"</td><td><span class='pill "+(n===6?"ok":"warn")+"'>"+n+"/6</span><br><span class='hint'>"+esc((r.dates||[]).join(", "))+"</span></td><td class='long'>"+esc(r.idea)+"</td><td class='long'>"+esc(r.why)+(r.experience?"<br><span class='hint'>Experience: "+esc(r.experience)+"</span>":"")+"</td><td>"+esc(r.pitchPlan)+"</td><td>"+esc(r.parentName)+"<br><span class='hint'>"+esc(r.parentEmail)+"</span></td></tr>";
+  }).join("");
+}
+
+$("signin").addEventListener("click", async ()=>{
+  $("gateMsg").textContent = "";
+  try { await signInWithPopup(auth, new GoogleAuthProvider()); }
+  catch(e){ $("gateMsg").textContent = "Sign-in didn't finish (" + (e.code||"error") + "). Allow pop-ups for this site and try again."; }
+});
+$("signout").addEventListener("click", ()=>signOut(auth));
+
+$("copyCsv").addEventListener("click", async ()=>{
+  const cols = ["submittedAt","name","grade","email","team","teammates","dates","idea","why","experience","pitchPlan","parentName","parentEmail"];
+  const q = v => '"' + String(Array.isArray(v) ? v.join("; ") : (v && v.toDate ? v.toDate().toISOString() : (v==null?"":v))).replace(/"/g,'""') + '"';
+  const csv = [cols.join(",")].concat(rows.map(r=>cols.map(c=>q(r[c])).join(","))).join("\n");
+  try { await navigator.clipboard.writeText(csv); $("msg").textContent = "Copied " + rows.length + " rows. Paste into a Google Sheet."; }
+  catch(e){ $("msg").textContent = "Your browser blocked copying. Try again."; }
+});
+
+onAuthStateChanged(auth, user=>{
+  unsubs.forEach(u=>u()); unsubs = [];
+  if (!user){ $("gate").classList.remove("hidden"); $("app").classList.add("hidden"); return; }
+  $("gate").classList.add("hidden"); $("app").classList.remove("hidden");
+  unsubs.push(onSnapshot(query(collection(db,"applications"), orderBy("submittedAt","desc")), snap=>{
+    rows = snap.docs.map(d=>d.data()); render(); $("msg").textContent = "";
+  }, err=>{
+    $("rows").innerHTML = '<tr><td colspan="10">No access.</td></tr>';
+    $("msg").textContent = "This account (" + user.email + ") can't view applications. Sign out and use the program director's school account.";
+  }));
+  unsubs.push(onSnapshot(collection(db,"pitchNotify"), s=>{ $("nPitch").textContent = new Set(s.docs.map(d=>d.data().email)).size; }, ()=>{}));
+});
+</script>
+</body>
+</html>
