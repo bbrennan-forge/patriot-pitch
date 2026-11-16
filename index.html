@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patriot Pitch &amp; Design Sprints</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a pit-lane ticket. Condensed display type shouts the numbers (40 / 6 / 1),
+   the six sprint dates run as a ticket strip, everything else stays quiet on paper-white. */
+:root{
+  --paper:#f4f4f2;
+  --surface:#ffffff;
+  --ink:#141414;
+  --muted:#5d5d5a;
+  --line:#d9d9d4;
+  --red:#c8102e;
+  --red-ink:#ffffff;
+  --tint:#fbeaec;
+  --ok:#1f7a3d;
+  --font-display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --font-body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#121212; --surface:#1c1c1c; --ink:#f1f1ee; --muted:#a8a8a2; --line:#333331;
+    --red:#ef3b52; --red-ink:#ffffff; --tint:#2a1518; --ok:#5cc47f; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121212; --surface:#1c1c1c; --ink:#f1f1ee; --muted:#a8a8a2; --line:#333331;
+  --red:#ef3b52; --red-ink:#ffffff; --tint:#2a1518; --ok:#5cc47f; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--font-body)}
+a{color:var(--red)}
+img{max-width:100%}
+:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--font-display);text-transform:uppercase;line-height:.95;margin:0;text-wrap:balance;letter-spacing:.01em}
+h2{font-size:clamp(40px,6vw,64px);font-weight:900}
+h3{font-size:28px;font-weight:700}
+p{margin:0}
+.mono{font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.btn{display:inline-flex;align-items:center;gap:8px;border:2px solid var(--red);background:var(--red);color:var(--red-ink);font:700 16px/1 var(--font-body);padding:14px 22px;border-radius:4px;text-decoration:none;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+
+/* header */
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.brand .mark{width:30px;height:30px;background:var(--red);color:var(--red-ink);display:grid;place-items:center;font:900 16px/1 var(--font-display);border-radius:3px}
+.brand span{font:700 15px/1.1 var(--font-body)}
+.brand small{display:block;font-weight:400;color:var(--muted);font-size:12px}
+nav.links{display:flex;gap:18px;margin-left:auto}
+nav.links a{color:var(--ink);text-decoration:none;font-weight:600;font-size:15px}
+nav.links a:hover{color:var(--red)}
+header.top .btn{padding:10px 16px;font-size:14px}
+@media (max-width:760px){nav.links{display:none} header.top .btn{margin-left:auto;white-space:nowrap} .brand small{display:none}}
+
+/* hero */
+.hero{padding-top:56px;padding-bottom:40px}
+.hero .eyebrow{color:var(--red);margin-bottom:18px}
+.hero h1{font-size:clamp(64px,13vw,168px);font-weight:900;line-height:.86}
+.hero h1 .r{color:var(--red)}
+.hero .lede{max-width:58ch;margin-top:24px;font-size:19px;color:var(--muted)}
+.hero .lede b{color:var(--ink)}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px;align-items:center}
+.deadline{display:inline-flex;align-items:center;gap:10px;border:1px dashed var(--red);color:var(--red);padding:10px 14px;border-radius:4px;font:600 15px/1.2 var(--font-body)}
+.deadline .num{font:900 26px/1 var(--font-display)}
+
+/* ticket strip */
+.strip{margin-top:44px;display:grid;grid-template-columns:repeat(6,1fr);border:2px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--surface)}
+.strip .stub{padding:14px 12px 16px;border-right:2px dashed var(--line);position:relative}
+.strip .stub:last-child{border-right:0}
+.strip .stub .n{font:900 44px/1 var(--font-display);color:var(--red)}
+.strip .stub .d{font:700 22px/1 var(--font-display);text-transform:uppercase;margin-top:6px}
+.strip .stub .w{color:var(--muted);font-size:13px}
+@media (max-width:760px){.strip{grid-template-columns:repeat(3,1fr)} .strip .stub:nth-child(3){border-right:0} .strip .stub:nth-child(-n+3){border-bottom:2px dashed var(--line)}}
+.strip-cap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:10px;color:var(--muted)}
+
+section{padding:72px 0;border-top:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;align-items:end;margin-bottom:36px}
+.sec-head p{color:var(--muted);max-width:60ch}
+@media (max-width:860px){.sec-head{grid-template-columns:1fr}}
+
+/* two programs */
+.programs{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media (max-width:860px){.programs{grid-template-columns:1fr}}
+.prog{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:18px}
+.prog.feature{border:2px solid var(--red)}
+.prog .tag{align-self:flex-start;padding:5px 10px;border-radius:3px;background:var(--tint);color:var(--red);font-weight:700;font-size:13px}
+.prog .tag.soon{background:transparent;border:1px solid var(--line);color:var(--muted)}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;margin:0}
+.facts dt{color:var(--muted);font-size:14px;padding-top:2px}
+.facts dd{margin:0;font-weight:600}
+.prog .bignum{font:900 72px/.85 var(--font-display);color:var(--red)}
+.bridge{margin-top:20px;padding:16px 20px;border-left:4px solid var(--red);background:var(--surface);color:var(--muted)}
+.bridge b{color:var(--ink)}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;counter-reset:s;border-top:2px solid var(--ink)}
+.steps li{list-style:none;padding:20px 18px 0 0}
+.steps .when{font:900 34px/1 var(--font-display);text-transform:uppercase}
+.steps .what{font-weight:700;margin-top:8px}
+.steps .how{color:var(--muted);font-size:15px;margin-top:4px}
+.steps ol{margin:0;padding:0;display:contents}
+@media (max-width:860px){.steps{grid-template-columns:1fr 1fr;row-gap:24px}}
+.sprint-week{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px}
+.sprint-week div{padding-top:14px;border-top:1px solid var(--line)}
+.sprint-week b{display:block;margin-bottom:4px}
+.sprint-week p{color:var(--muted);font-size:15px}
+@media (max-width:760px){.sprint-week{grid-template-columns:1fr}}
+
+/* form */
+.apply{background:var(--surface)}
+.form-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:40px}
+@media (max-width:860px){.form-grid{grid-template-columns:1fr}}
+.aside{position:sticky;top:90px;align-self:start;display:flex;flex-direction:column;gap:16px}
+.aside .note{color:var(--muted);font-size:15px}
+.done{border:2px solid var(--ok);border-radius:6px;padding:28px;display:flex;flex-direction:column;gap:12px}
+.done h3{color:var(--ok)}
+
+/* pitch path */
+.path{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:8px}
+.path div{border-top:6px solid var(--line);padding:12px 12px 0 0;position:relative}
+.path div.final{border-top-color:var(--red)}
+.path .d{font:900 26px/1 var(--font-display);text-transform:uppercase}
+.path .t{font-weight:600;font-size:15px;margin-top:4px}
+.path .s{color:var(--muted);font-size:13px}
+@media (max-width:860px){.path{grid-template-columns:1fr 1fr 1fr;row-gap:20px}}
+@media (max-width:480px){.path{grid-template-columns:1fr 1fr}}
+
+/* timeline */
+.tl{display:grid;grid-template-columns:120px 1fr;margin:0;border-left:0}
+.tl dt,.tl dd{padding:12px 0;border-top:1px solid var(--line);margin:0}
+.tl dt{font:700 20px/1.2 var(--font-display);text-transform:uppercase}
+.tl dd b{display:block}
+.tl dd span{color:var(--muted);font-size:15px}
+.tl .past{opacity:.45}
+.tl dt.next{color:var(--red)}
+
+/* faq */
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+@media (max-width:860px){.faq{grid-template-columns:1fr}}
+details{border-top:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::after{content:"+";font:900 24px/1 var(--font-display);color:var(--red)}
+details[open] summary::after{content:"–"}
+details p{color:var(--muted);margin-top:8px}
+
+footer{border-top:2px solid var(--ink);padding:40px 0 56px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:28px;align-items:center;justify-content:space-between}
+footer img{width:220px;background:#fff;padding:8px;border-radius:4px}
+footer p{color:var(--muted);font-size:15px}
+
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="CDS Entrepreneurship Institute, back to top">
+      <div class="mark" aria-hidden="true">EI</div>
+      <span>Entrepreneurship Institute<small>Carrollwood Day School</small></span>
+    </a>
+    <nav class="links" aria-label="Sections">
+      <a href="#programs">Programs</a>
+      <a href="#sprints">Sprints</a>
+      <a href="#pitch">Pitch</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <a class="btn" href="#apply">Apply for Sprints</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero wrap">
+    <p class="mono eyebrow">CDS Entrepreneurship Institute · Season 2026–27</p>
+    <h1>40 spots.<br>6 sprints.<br><span class="r">1 stage.</span></h1>
+    <p class="lede">Design Sprints are six Wednesday workshops where you take one idea from a problem you've noticed to something you can test. <b>Applications are open now through Monday, November 30.</b> Then take it to the Patriot Pitch stage on March 10.</p>
+    <div class="ctas">
+      <a class="btn" href="#apply">Apply for Design Sprints</a>
+      <a class="btn ghost" href="#pitch">How Patriot Pitch works</a>
+      <span class="deadline" id="deadline" aria-live="polite"><span class="num" id="daysLeft">–</span><span id="daysLabel">days left to apply</span></span>
+    </div>
+
+    <div class="strip" aria-label="The six Design Sprint dates">
+      <div class="stub"><div class="n">01</div><div class="d">Dec 2</div><div class="w">Wednesday</div></div>
+      <div class="stub"><div class="n">02</div><div class="d">Dec 9</div><div class="w">Wednesday</div></div>
+      <div class="stub"><div class="n">03</div><div class="d">Jan 6</div><div class="w">Wednesday</div></div>
+      <div class="stub"><div class="n">04</div><div class="d">Jan 13</div><div class="w">Wednesday</div></div>
+      <div class="stub"><div class="n">05</div><div class="d">Jan 20</div><div class="w">Wednesday</div></div>
+      <div class="stub"><div class="n">06</div><div class="d">Jan 27</div><div class="w">Wednesday</div></div>
+    </div>
+    <div class="strip-cap mono"><span>Design Sprints · 6 sessions</span><span>Patriot Pitch applications due Jan 31</span></div>
+  </div>
+
+  <section id="programs">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Two ways in</h2>
+        <p>Sprints are the on-ramp: six weeks to build an idea with mentors in the room. Patriot Pitch is the stage, and it's open to everyone, whether or not you did the sprints.</p>
+      </div>
+      <div class="programs">
+        <article class="prog feature">
+          <span class="tag">Applications open</span>
+          <div class="bignum">40</div>
+          <h3>Design Sprints</h3>
+          <p>Six hands-on workshops. Each one opens with a guest founder's short keynote, then your team builds, tests and iterates with mentors.</p>
+          <dl class="facts">
+            <dt>Spots</dt><dd>40, by application</dd>
+            <dt>Apply by</dt><dd>Mon, Nov 30</dd>
+            <dt>Decisions</dt><dd>Tue, Dec 1 by email</dd>
+            <dt>Sessions</dt><dd>Wednesdays: Dec 2, 9 · Jan 6, 13, 20, 27</dd>
+            <dt>Cost</dt><dd>$75 in Veracross, only if accepted. Due Dec 8</dd>
+          </dl>
+          <a class="btn" href="#apply">Apply now</a>
+        </article>
+        <article class="prog">
+          <span class="tag soon">Application opens soon</span>
+          <div class="bignum" style="color:var(--ink)">∞</div>
+          <h3>Patriot Pitch</h3>
+          <p>Pitch your venture to real judges. No cap on applicants. Semifinals run in morning and afternoon cohorts with their own judging panels.</p>
+          <dl class="facts">
+            <dt>Spots</dt><dd>Unlimited applications</dd>
+            <dt>Apply by</dt><dd>Sun, Jan 31</dd>
+            <dt>Decisions</dt><dd>Wed, Feb 3</dd>
+            <dt>Semifinals</dt><dd>Sat, Feb 20 · Wagner Entrepreneurial Center</dd>
+            <dt>Finals</dt><dd>Wed, Mar 10</dd>
+          </dl>
+          <a class="btn ghost" href="#pitch">Get notified</a>
+        </article>
+      </div>
+      <p class="bridge"><b>Didn't get a sprint spot?</b> You can still apply to Patriot Pitch. Sprints help, but they aren't required.</p>
+    </div>
+  </section>
+
+  <section id="sprints">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How to get a sprint spot</h2>
+        <p>Spots are limited, so we ask for a short application and a real commitment to show up. You pay only after you're accepted.</p>
+      </div>
+      <div class="steps">
+        <ol>
+          <li><div class="when">Nov 30</div><div class="what">Apply</div><div class="how">Fill out the short application. It takes about 5 minutes.</div></li>
+          <li><div class="when">Dec 1</div><div class="what">Hear back</div><div class="how">Decisions go to your CDS email and your parent's email.</div></li>
+          <li><div class="when">Dec 2</div><div class="what">Sprint 01</div><div class="how">Show up to the first workshop. Bring your idea or come ready to join a team.</div></li>
+          <li><div class="when">Dec 8</div><div class="what">Lock your spot</div><div class="how">Pay $75 in Veracross. Unpaid spots go to the waitlist before Sprint 02.</div></li>
+        </ol>
+      </div>
+      <div class="sprint-week">
+        <div><b>Guest founder keynote</b><p>Each sprint kicks off with someone who has built something, telling you how it really went.</p></div>
+        <div><b>Build and test</b><p>Teams work through the design cycle: empathy, problem definition, prototyping, feedback and iteration.</p></div>
+        <div><b>Leave with a pitchable idea</b><p>By January 27 you'll have what you need for a strong Patriot Pitch application.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="apply" class="apply">
+    <div class="wrap form-grid">
+      <div class="aside">
+        <h2>Apply for Design Sprints</h2>
+        <p class="note">Deadline: <b>Monday, November 30, 11:59 pm</b>. One application per student. You can come back and update your answers until the deadline.</p>
+        <p class="note">No idea yet? Apply anyway. Tell us a problem you care about and choose "Open to joining a team."</p>
+        
+      </div>
+
+      <div>
+        <div class="done" style="border-color:var(--red)">
+          <h3 style="color:var(--red)">Apply on the CDS application page</h3>
+          <p>The application opens on claude.ai. Sign in with your CDS account, answer 12 short questions, and come back to update your answers any time before November 30.</p>
+          <p class="hint">You'll share your idea, why you want a spot, and which of the six sprint dates you can attend.</p>
+          <div><a class="btn" href="https://claude.ai/artifact/RNHTwXNr3cCs84qRLxaVaZ">Open the application</a></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pitch">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Patriot Pitch</h2>
+        <p>Every student with a venture can apply, and there's no cap. The application opens soon and is due January 31. Semifinalists get a bootcamp, then pitch in front of judges and families in the Wagner Entrepreneurial Center.</p>
+      </div>
+      <div class="path" aria-label="Patriot Pitch path">
+        <div><div class="d">Jan 31</div><div class="t">Applications due</div><div class="s">Sunday</div></div>
+        <div><div class="d">Feb 3</div><div class="t">Decisions</div><div class="s">Wednesday</div></div>
+        <div><div class="d">Feb 13</div><div class="t">Bootcamp</div><div class="s">Saturday · semifinalists</div></div>
+        <div><div class="d">Feb 20</div><div class="t">Semifinals</div><div class="s">Saturday · AM and PM cohorts, parents welcome</div></div>
+        <div><div class="d">Feb 27</div><div class="t">Finals bootcamp</div><div class="s">Saturday · finalists</div></div>
+        <div class="final"><div class="d">Mar 10</div><div class="t">Finals</div><div class="s">Wednesday · full day</div></div>
+      </div>
+      <p style="margin-top:28px">Want an email when the Pitch application opens? <a href="https://claude.ai/artifact/RNHTwXNr3cCs84qRLxaVaZ#pitch">Add yourself on the CDS application page</a>.</p>
+    </div>
+  </section>
+
+  <section id="timeline">
+    <div class="wrap">
+      <div class="sec-head"><h2>Full season</h2><p>Every date from application to Finals. Past dates fade out automatically.</p></div>
+      <dl class="tl" id="tl"></dl>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2><p>Still unsure? Ask Mr. Brennan in Room 162 or on GChat.</p></div>
+      <div class="faq">
+        <div>
+          <details><summary>Do I need an idea to apply?</summary><p>No. Tell us a problem you care about and choose "Open to a team." Sprints are built for figuring out the idea.</p></details>
+          <details><summary>Can I apply with a team?</summary><p>Yes. Choose "Team," list your teammates, and have each teammate submit their own application.</p></details>
+          <details><summary>How are the 40 chosen?</summary><p>We look at how clearly you describe a problem, why you want to do this, and whether you can attend all six sprints.</p></details>
+          <details><summary>What if I miss a sprint?</summary><p>Life happens. Let Mr. Brennan know ahead of time. Missing more than one may give your spot to someone on the waitlist.</p></details>
+        </div>
+        <div>
+          <details><summary>Can I do Patriot Pitch without the sprints?</summary><p>Yes. Pitch is open to everyone, with no cap. Sprints just give you a head start.</p></details>
+          <details><summary>When do I pay the $75?</summary><p>Only after you're accepted. You'll get a Veracross link on December 1, and payment is due December 8.</p></details>
+          <details><summary>Can my family come watch?</summary><p>Yes. Parents are invited to the Patriot Pitch semifinals on February 20 in the Wagner Entrepreneurial Center.</p></details>
+          <details><summary>I didn't get a spot. Now what?</summary><p>You're on the waitlist, and spots open up. You can still apply to Patriot Pitch by January 31.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <p><b style="color:var(--ink)">CDS Entrepreneurship Institute</b> · Wagner Entrepreneurial Center</p>
+      <p>Questions: Brendan Brennan, Director of Entrepreneurship · Room 162</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const DEADLINE = new Date("2026-12-01T04:59:00Z");
+  const $ = id => document.getElementById(id);
+  const ms = DEADLINE - new Date();
+  if (ms <= 0){ $("daysLeft").textContent = "0"; $("daysLabel").textContent = "Sprint applications are closed"; }
+  else { const d = Math.ceil(ms / 86400000); $("daysLeft").textContent = d; $("daysLabel").textContent = d === 1 ? "day left to apply" : "days left to apply"; }
+  const events = [
+    ["2026-11-30","Nov 30","Design Sprint applications due","11:59 pm"],
+    ["2026-12-01","Dec 1","Sprint decisions emailed",""],
+    ["2026-12-02","Dec 2","Design Sprint 01",""],
+    ["2026-12-08","Dec 8","$75 Veracross payment due","Unpaid spots go to the waitlist"],
+    ["2026-12-09","Dec 9","Design Sprint 02",""],
+    ["2027-01-06","Jan 6","Design Sprint 03",""],
+    ["2027-01-13","Jan 13","Design Sprint 04",""],
+    ["2027-01-20","Jan 20","Design Sprint 05",""],
+    ["2027-01-27","Jan 27","Design Sprint 06","Last sprint"],
+    ["2027-01-31","Jan 31","Patriot Pitch applications due",""],
+    ["2027-02-03","Feb 3","Patriot Pitch decisions",""],
+    ["2027-02-13","Feb 13","Semifinal bootcamp",""],
+    ["2027-02-20","Feb 20","Semifinals","Wagner Entrepreneurial Center, parents welcome"],
+    ["2027-02-27","Feb 27","Finals bootcamp",""],
+    ["2027-03-10","Mar 10","Patriot Pitch Finals","Full day"]
+  ];
+  const today = new Date(); today.setHours(0,0,0,0);
+  let marked = false; const tl = $("tl");
+  events.forEach(([iso,label,title,sub])=>{
+    const past = new Date(iso+"T23:59:00") < today;
+    const cls = past ? "past" : (!marked ? (marked = true, "next") : "");
+    const a = document.createElement("dt"); a.textContent = label;
+    const b = document.createElement("dd"); const bb = document.createElement("b"); bb.textContent = title; b.appendChild(bb);
+    if (sub){ const sp = document.createElement("span"); sp.textContent = sub; b.appendChild(sp); }
+    if (cls){ a.className = cls; b.className = cls; }
+    tl.append(a,b);
+  });
+})();
+</script>
+</body>
+</html>
