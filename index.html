@@ -169,16 +169,24 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);outline:none;box
 .done h3{color:var(--ok)}
 
 /* pitch path */
-.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:8px}
-.path div{border-top:6px solid var(--line);padding:12px 12px 0 0;position:relative}
-.path div.final{border-top-color:var(--red)}
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0 20px;margin-top:8px}
+.path>div{border-top:6px solid var(--line);padding-top:14px}
+.path>div.final{border-top-color:var(--red)}
+@media (max-width:760px){.path{grid-template-columns:1fr 1fr;row-gap:28px}}
 .path .d{font:900 26px/1 var(--font-display);text-transform:uppercase}
 .path .t{font-weight:600;font-size:15px;margin-top:4px}
 .path .s{color:var(--muted);font-size:13px}
 @media (max-width:860px){.path{grid-template-columns:1fr 1fr;row-gap:20px}}
 @media (max-width:480px){.path{grid-template-columns:1fr 1fr}}
-.notify{display:flex;flex-direction:row;gap:10px;flex-wrap:wrap;margin-top:28px;align-items:flex-end}
-.notify .field{flex:1 1 260px}
+.notify-card{margin-top:44px;background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--red);border-radius:6px;padding:24px 28px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:16px 32px;align-items:center}
+.notify-card h3{font-size:26px}
+.notify-card p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.notify-card form.notify{display:flex;flex-direction:row;gap:10px;margin:0}
+.notify input{flex:1;min-width:0}
+.notify .btn{white-space:nowrap}
+.notify-card .err{grid-column:2;margin:0}
+.notify-card .err:empty{display:none}
+@media (max-width:760px){.notify-card{grid-template-columns:1fr;padding:22px}.notify-card .err{grid-column:1}.notify-card form.notify{flex-direction:column}.notify .btn{justify-content:center}}
 
 /* timeline */
 .tl{display:grid;grid-template-columns:120px 1fr;margin:0;border-left:0}
@@ -453,16 +461,19 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
         <p>Every student with a venture can apply. You don’t need to do the Design Sprints, and there’s no application fee. We accept 24 teams into the semifinals. Semifinalists get a bootcamp, then pitch to judges in the Wagner Entrepreneurial Center on February 20 in morning and afternoon cohorts. The top 10 teams get a Finals bootcamp and take the stage on March 10 at the University of Tampa, in front of judges and families, competing for $3,500 in prizes.</p>
       </div>
       <div class="path" aria-label="Patriot Pitch path">
-        <div><div class="d">24</div><div class="t">Teams accepted into the semifinals</div><div class="s">Decisions Feb 3</div></div>
+        <div><div class="d">24</div><div class="t">Accepted to semifinals</div><div class="s">Decisions Feb 3</div></div>
         <div><div class="d">Feb 20</div><div class="t">Semifinals</div><div class="s">AM and PM cohorts</div></div>
         <div><div class="d">10</div><div class="t">Teams advance</div><div class="s">Finals Bootcamp Feb 27</div></div>
         <div class="final"><div class="d">$3,500</div><div class="t">Finals</div><div class="s">Mar 10 · University of Tampa</div></div>
       </div>
-      <form class="notify" id="notifyForm" novalidate>
-        <div class="field"><label for="n-email">Get an email when the Pitch application opens</label><input id="n-email" type="email" placeholder="you@carrollwooddayschool.org" required></div>
-        <button class="btn" type="submit" id="notifyBtn">Notify me</button>
-      </form>
-      <p class="err" id="notifyMsg" role="status" style="margin-top:10px"></p>
+      <div class="notify-card">
+        <div><h3>Get notified</h3><p>We’ll email you when the Patriot Pitch application opens.</p></div>
+        <form class="notify" id="notifyForm" novalidate>
+          <input id="n-email" type="email" aria-label="Your email" placeholder="you@carrollwooddayschool.org" required>
+          <button class="btn" type="submit" id="notifyBtn">Notify me</button>
+        </form>
+        <p class="err" id="notifyMsg" role="status"></p>
+      </div>
     </div>
   </section>
 
