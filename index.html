@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 /* Layout idea: a pit-lane ticket. Condensed display type shouts the numbers (40 / 6 / 1),
-   the six sprint dates run as a ticket strip, everything else stays quiet on paper-white. */
+   key dates run as a ticket strip, everything else stays quiet on paper-white. */
 :root{
   --paper:#f4f4f2;
   --surface:#ffffff;
@@ -86,6 +86,16 @@ header.top .btn{padding:10px 16px;font-size:14px}
 .strip .stub .w{color:var(--muted);font-size:13px}
 @media (max-width:760px){.strip{grid-template-columns:repeat(3,1fr)} .strip .stub:nth-child(3){border-right:0} .strip .stub:nth-child(-n+3){border-bottom:2px dashed var(--line)}}
 .strip-cap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:10px;color:var(--muted)}
+.keydates{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--ink);border-radius:6px;overflow:hidden;background:var(--surface)}
+.keydates .stub{padding:16px 14px 18px;border-right:2px dashed var(--line);border-bottom:2px dashed var(--line);display:flex;flex-direction:column;gap:4px}
+.keydates .stub:nth-child(4n){border-right:0}
+.keydates .stub:nth-child(n+5){border-bottom:0}
+.keydates .n{font:900 30px/1 var(--font-display);color:var(--red)}
+.keydates .d{font:900 30px/1 var(--font-display);text-transform:uppercase;margin-top:6px}
+.keydates .t{font-weight:700;font-size:15px;line-height:1.3}
+.keydates .w{color:var(--muted);font-size:13px}
+.keydates .stub.final{background:var(--tint)}
+@media (max-width:860px){.keydates{grid-template-columns:repeat(2,1fr)}.keydates .stub{border-right:2px dashed var(--line);border-bottom:2px dashed var(--line)}.keydates .stub:nth-child(2n){border-right:0}.keydates .stub:nth-child(n+7){border-bottom:0}}
 
 section{padding:72px 0;border-top:1px solid var(--line)}
 .sec-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:32px;align-items:end;margin-bottom:36px}
@@ -144,7 +154,7 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);outline:none;box
 .choice span{display:inline-block;padding:9px 14px;border:1px solid var(--line);border-radius:4px;background:var(--paper);font-size:15px}
 .choice input:checked + span{border-color:var(--red);background:var(--tint);color:var(--red);font-weight:700}
 .choice input:focus-visible + span{outline:3px solid var(--red);outline-offset:2px}
-.dates{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
 @media (max-width:560px){.dates{grid-template-columns:repeat(2,1fr)}}
 .dates .choice span{display:block;text-align:center;font-family:var(--font-display);font-weight:700;font-size:20px;text-transform:uppercase}
 .check{display:flex;gap:10px;align-items:flex-start;font-size:15px}
@@ -159,13 +169,13 @@ input:focus,select:focus,textarea:focus{border-color:var(--red);outline:none;box
 .done h3{color:var(--ok)}
 
 /* pitch path */
-.path{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:8px}
+.path{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:8px}
 .path div{border-top:6px solid var(--line);padding:12px 12px 0 0;position:relative}
 .path div.final{border-top-color:var(--red)}
 .path .d{font:900 26px/1 var(--font-display);text-transform:uppercase}
 .path .t{font-weight:600;font-size:15px;margin-top:4px}
 .path .s{color:var(--muted);font-size:13px}
-@media (max-width:860px){.path{grid-template-columns:1fr 1fr 1fr;row-gap:20px}}
+@media (max-width:860px){.path{grid-template-columns:1fr 1fr;row-gap:20px}}
 @media (max-width:480px){.path{grid-template-columns:1fr 1fr}}
 .notify{display:flex;flex-direction:row;gap:10px;flex-wrap:wrap;margin-top:28px;align-items:flex-end}
 .notify .field{flex:1 1 260px}
@@ -232,10 +242,10 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
       <span>Entrepreneurship Institute<small>Carrollwood Day School</small></span>
     </a>
     <nav class="links" aria-label="Sections">
-      <a href="#programs">Programs</a>
+      <a href="#programs">Ways in</a>
       <a href="#sprints">Sprints</a>
       <a href="#pitch">Pitch</a>
-      <a href="#timeline">Timeline</a>
+      <a href="#dates">Dates</a>
       <a href="#faq">FAQ</a>
     </nav>
     <a class="btn" href="#apply">Apply for Sprints</a>
@@ -247,88 +257,97 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
    <div class="hero-top">
     <div>
     <div class="eyebrow-row"><img class="seal" id="sealTop" alt="Carrollwood Day School seal"><p class="mono eyebrow">CDS Entrepreneurship Institute · Season 2026–27</p></div>
-    <h1>40 spots.<br>6 sprints.<br><span class="r">1 stage.</span></h1>
-    <p class="lede">Design Sprints are six Wednesday evening workshops, 6 to 8 pm, where you take one idea from a problem you've noticed to something you can test. <b>Applications are open now through Monday, November 30.</b> Then take it to the Patriot Pitch stage on March 10.</p>
+    <h1>24 spots.<br>$3,500.<br><span class="r">1 stage.</span></h1>
+    <p class="lede">Patriot Pitch is the CDS student startup competition. Bring a venture you’re building, pitch it to a panel of judges, and compete for <b>$3,500 in prizes</b>. 24 teams are accepted to the semifinals on February 20. The top 10 advance to Finals on March 10 at the University of Tampa. <b>Applications are due January 31, and there’s no fee to apply.</b></p>
     <div class="ctas">
-      <a class="btn" href="#apply">Apply for Design Sprints</a>
+      <a class="btn" href="#programs">Two ways to apply</a>
       <a class="btn ghost" href="#pitch">How Patriot Pitch works</a>
-      <span class="deadline" id="deadline" aria-live="polite"><span class="num" id="daysLeft">–</span><span id="daysLabel">days left to apply</span></span>
+      <span class="deadline" id="deadline" aria-live="polite"><span class="num" id="daysLeft">–</span><span id="daysLabel">days until Pitch applications are due</span></span>
     </div>
     </div>
     <img class="pitch-logo" src="data:image/png;base64,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" alt="The Patriot Pitch logo" width="338" height="400">
    </div>
 
-    <div class="strip" aria-label="The six Design Sprint dates">
-      <div class="stub"><div class="n">01</div><div class="d">Dec 2</div><div class="w">Wed · 6–8 pm</div></div>
-      <div class="stub"><div class="n">02</div><div class="d">Dec 9</div><div class="w">Wed · 6–8 pm</div></div>
-      <div class="stub"><div class="n">03</div><div class="d">Jan 6</div><div class="w">Wed · 6–8 pm</div></div>
-      <div class="stub"><div class="n">04</div><div class="d">Jan 13</div><div class="w">Wed · 6–8 pm</div></div>
-      <div class="stub"><div class="n">05</div><div class="d">Jan 20</div><div class="w">Wed · 6–8 pm</div></div>
-      <div class="stub"><div class="n">06</div><div class="d">Jan 27</div><div class="w">Wed · 6–8 pm</div></div>
-    </div>
-    <div class="strip-cap mono"><span>Design Sprints · Wednesdays, 6–8 pm</span><span>Patriot Pitch applications due Jan 31</span></div>
   </div>
 
   <section id="programs">
     <div class="wrap">
       <div class="sec-head">
         <h2>Two ways to the stage</h2>
-        <p>Anyone can apply straight to Patriot Pitch. You do not need to do the Design Sprints first. The sprints are there to make sure you apply with a strong, tested idea.</p>
+        <p>Patriot Pitch accepts 24 teams. You can apply directly, or build your idea in the Design Sprints first. The sprints are not required to be accepted, but they’re the best way to make sure you’re ready.</p>
       </div>
       <div class="programs">
-        <article class="prog feature">
-          <span class="tag">Applications open</span>
-          <div class="bignum">40</div>
-          <h3>Design Sprints</h3>
-          <p>Six hands-on workshops. Each one opens with a guest founder's short keynote, then your team builds, tests and iterates with mentors.</p>
-          <dl class="facts">
-            <dt>Spots</dt><dd>40, by application</dd>
-            <dt>Apply by</dt><dd>Mon, Nov 30</dd>
-            <dt>Decisions</dt><dd>Tue, Dec 1 by email</dd>
-            <dt>Sessions</dt><dd>Wednesdays, 6–8 pm: Dec 2, 9 · Jan 6, 13, 20, 27</dd>
-            <dt>Cost</dt><dd>$75 in Veracross, only if accepted. Due Dec 8</dd>
-          </dl>
-          <a class="btn" href="#apply">Apply now</a>
-        </article>
         <article class="prog">
-          <span class="tag soon">Open to everyone · Application opens soon</span>
-          <div class="bignum" style="color:var(--ink)">∞</div>
-          <h3>Patriot Pitch</h3>
-          <p>Pitch your venture to real judges. No sprints required, no cap on applicants and no application fee. Semifinals run in morning and afternoon cohorts with their own judging panels.</p>
+          <span class="tag soon">Way 1 · Application opens soon</span>
+          <div class="bignum" style="color:var(--ink)">24</div>
+          <h3>Apply directly to Patriot Pitch</h3>
+          <p>Already have a venture or a strong idea? Apply straight to Patriot Pitch. No sprints required and no application fee. Accepted teams pitch in the semifinals, and 10 teams advance to Finals.</p>
           <dl class="facts">
-            <dt>Spots</dt><dd>Unlimited applications</dd>
-            <dt>Sprints</dt><dd>Not required</dd>
+            <dt>Spots</dt><dd>24 teams</dd>
             <dt>Cost</dt><dd>Free to apply</dd>
             <dt>Apply by</dt><dd>Sun, Jan 31</dd>
             <dt>Decisions</dt><dd>Wed, Feb 3</dd>
             <dt>Semifinals</dt><dd>Sat, Feb 20 · Wagner Entrepreneurial Center</dd>
-            <dt>Finals</dt><dd>Wed, Mar 10 · families welcome</dd>
+            <dt>Finals</dt><dd>Wed, Mar 10 · University of Tampa · 10 teams</dd>
           </dl>
-          <a class="btn ghost" href="#pitch">Get notified</a>
+          <a class="btn ghost" href="#pitch">Get notified when it opens</a>
+        </article>
+        <article class="prog feature">
+          <span class="tag">Way 2 · Sprint applications open</span>
+          <div class="bignum">40</div>
+          <h3>Start with the Design Sprints</h3>
+          <p>Four Wednesday evening workshops in January. A guest founder kicks off each one, then you build, test and sharpen your idea with mentors. Not required for Patriot Pitch, but it helps make sure you apply with a strong, tested idea.</p>
+          <dl class="facts">
+            <dt>Spots</dt><dd>40, by application</dd>
+            <dt>Apply by</dt><dd>Thu, Dec 17</dd>
+            <dt>Decisions</dt><dd>Dec 19 by email</dd>
+            <dt>Sessions</dt><dd>Wednesdays, 6–8 pm: Jan 6, 13, 20, 27</dd>
+            <dt>Cost</dt><dd>$75 in Veracross, only if accepted. Due Jan 6</dd>
+          </dl>
+          <a class="btn" href="#apply">Apply for Design Sprints</a>
         </article>
       </div>
-      <p class="bridge"><b>Sprints are optional.</b> Go straight to Patriot Pitch if your idea is ready. Join the sprints if you want six weeks of help making it stronger first. Either way, you can apply to Pitch by January 31.</p>
+      <p class="bridge"><b>The Design Sprints are not mandatory.</b> You can be accepted to Patriot Pitch without them. They do help: you’ll finish on January 27 with a tested idea and a pitch that’s ready for the January 31 application.</p>
+    </div>
+  </section>
+
+  <section id="dates">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Key dates</h2>
+        <p>From the first sprint application to Finals night at the University of Tampa.</p>
+      </div>
+      <div class="keydates">
+        <div class="stub"><div class="n">01</div><div class="d">Dec 17</div><div class="t">Design Sprint applications due</div><div class="w">Thursday · 11:59 pm</div></div>
+        <div class="stub"><div class="n">02</div><div class="d">Jan 6</div><div class="t">Design Sprints begin</div><div class="w">Wednesdays, 6–8 pm, through Jan 27</div></div>
+        <div class="stub"><div class="n">03</div><div class="d">Jan 31</div><div class="t">Patriot Pitch applications due</div><div class="w">Sunday · no fee</div></div>
+        <div class="stub"><div class="n">04</div><div class="d">Feb 3</div><div class="t">Decisions on 24 spots</div><div class="w">Wednesday</div></div>
+        <div class="stub"><div class="n">05</div><div class="d">Feb 13</div><div class="t">Semifinal Bootcamp</div><div class="w">Saturday</div></div>
+        <div class="stub"><div class="n">06</div><div class="d">Feb 20</div><div class="t">Semifinals</div><div class="w">Saturday · 24 teams · Wagner Entrepreneurial Center</div></div>
+        <div class="stub"><div class="n">07</div><div class="d">Feb 27</div><div class="t">Finals Bootcamp</div><div class="w">Saturday · 10 finalists</div></div>
+        <div class="stub final"><div class="n">08</div><div class="d">Mar 10</div><div class="t">Finals at the University of Tampa</div><div class="w">Wednesday · families welcome</div></div>
+      </div>
     </div>
   </section>
 
   <section id="sprints">
     <div class="wrap">
       <div class="sec-head">
-        <h2>How to get a sprint spot</h2>
-        <p>Spots are limited, so we ask for a short application and a real commitment to show up. You pay only after you're accepted.</p>
+        <h2>Design Sprints: optional, but they help</h2>
+        <p>Spots are limited to 40, so we ask for a short application and a real commitment to show up. You pay only after you’re accepted. Doing the sprints is not a requirement for Patriot Pitch.</p>
       </div>
       <div class="steps">
         <ol>
-          <li><div class="when">Nov 30</div><div class="what">Apply</div><div class="how">Fill out the form below. It takes about 5 minutes.</div></li>
-          <li><div class="when">Dec 1</div><div class="what">Hear back</div><div class="how">Decisions go to your CDS email and your parent's email.</div></li>
-          <li><div class="when">Dec 2</div><div class="what">Sprint 01</div><div class="how">Show up to the first workshop, 6–8 pm. Bring your idea or come ready to join a team.</div></li>
-          <li><div class="when">Dec 8</div><div class="what">Lock your spot</div><div class="how">Pay $75 in Veracross. Unpaid spots go to the waitlist before Sprint 02.</div></li>
+          <li><div class="when">Dec 17</div><div class="what">Apply</div><div class="how">Fill out the form below. It takes about 5 minutes.</div></li>
+          <li><div class="when">Dec 19</div><div class="what">Hear back</div><div class="how">Decisions go to your CDS email and your parent’s email, with a Veracross link.</div></li>
+          <li><div class="when">Jan 6</div><div class="what">First sprint</div><div class="how">Pay $75 in Veracross by today, then join us 6–8 pm. Bring your idea or come ready to join a team.</div></li>
+          <li><div class="when">Jan 31</div><div class="what">Apply to Pitch</div><div class="how">After the last sprint on Jan 27, turn what you built into your Patriot Pitch application.</div></li>
         </ol>
       </div>
       <div class="sprint-week">
         <div><b>Guest founder keynote</b><p>Each sprint kicks off with someone who has built something, telling you how it really went.</p></div>
         <div><b>Build and test</b><p>Teams work through the design cycle: empathy, problem definition, prototyping, feedback and iteration.</p></div>
-        <div><b>Leave with a pitchable idea</b><p>By January 27 you'll have what you need for a strong Patriot Pitch application.</p></div>
+        <div><b>Leave with a pitchable idea</b><p>By January 27 you’ll have what you need for a strong Patriot Pitch application.</p></div>
       </div>
     </div>
   </section>
@@ -337,9 +356,9 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
     <div class="wrap form-grid">
       <div class="aside">
         <h2>Apply for Design Sprints</h2>
-        <p class="note">Deadline: <b>Monday, November 30, 11:59 pm</b>. One application per student. Need to change something after you submit? Email Mr. Brennan.</p>
+        <p class="note">Deadline: <b>Thursday, December 17, 11:59 pm</b>. One application per student. Need to change something after you submit? Email Mr. Brennan.</p>
         <p class="note">No idea yet? Apply anyway. Tell us a problem you care about and choose "Open to joining a team."</p>
-        <div id="appStatus" class="status info" role="status">Applications are open until Monday, November 30 at 11:59 pm.</div>
+        <div id="appStatus" class="status info" role="status">Applications are open until Thursday, December 17 at 11:59 pm.</div>
       </div>
 
       <div>
@@ -395,17 +414,15 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
             <div class="field">
               <span class="lbl" id="dates-lbl">Check every sprint you can attend <span class="hint">All are Wednesdays, 6–8 pm.</span></span>
               <div class="dates" role="group" aria-labelledby="dates-lbl">
-                <label class="choice"><input type="checkbox" name="dates" value="Dec 2" id="d1"><span>Dec 2</span></label>
-                <label class="choice"><input type="checkbox" name="dates" value="Dec 9" id="d2"><span>Dec 9</span></label>
-                <label class="choice"><input type="checkbox" name="dates" value="Jan 6" id="d3"><span>Jan 6</span></label>
-                <label class="choice"><input type="checkbox" name="dates" value="Jan 13" id="d4"><span>Jan 13</span></label>
-                <label class="choice"><input type="checkbox" name="dates" value="Jan 20" id="d5"><span>Jan 20</span></label>
-                <label class="choice"><input type="checkbox" name="dates" value="Jan 27" id="d6"><span>Jan 27</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 6" id="d1"><span>Jan 6</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 13" id="d2"><span>Jan 13</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 20" id="d3"><span>Jan 20</span></label>
+                <label class="choice"><input type="checkbox" name="dates" value="Jan 27" id="d4"><span>Jan 27</span></label>
               </div>
-              <p class="hint" id="dates-note">Spots go first to students who can make all six.</p>
+              <p class="hint" id="dates-note">Spots go first to students who can make all four.</p>
             </div>
             <label class="check" for="f-attend"><input type="checkbox" id="f-attend" name="attendAck" required><span>I understand spots are limited, and missing more than one sprint may give my spot to a student on the waitlist.</span></label>
-            <label class="check" for="f-fee"><input type="checkbox" id="f-fee" name="feeAck" required><span>I understand the $75 fee is paid in Veracross only if I'm accepted, by December 8.</span></label>
+            <label class="check" for="f-fee"><input type="checkbox" id="f-fee" name="feeAck" required><span>I understand the $75 fee is paid in Veracross only if I'm accepted, by January 6.</span></label>
             <div class="field">
               <span class="lbl" id="pitch-lbl">Are you planning to apply to Patriot Pitch?</span>
               <div class="choices" role="radiogroup" aria-labelledby="pitch-lbl">
@@ -422,7 +439,7 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
 
         <div class="done hidden" id="doneBox" tabindex="-1">
           <h3>Application received</h3>
-          <p id="doneText">Thanks. Decisions go out Tuesday, December 1 to your CDS email.</p>
+          <p id="doneText">Thanks. Decisions go out December 19 to your CDS email.</p>
           <p class="hint">Need to change something? Email Mr. Brennan. A confirmation of your answers is shown above.</p>
         </div>
       </div>
@@ -433,15 +450,13 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
     <div class="wrap">
       <div class="sec-head">
         <h2>Patriot Pitch</h2>
-        <p>Every student with a venture can apply, and there's no cap. The application opens soon and is due January 31. You don't need to do the Design Sprints to apply, and there's no application fee. Semifinalists get a bootcamp, then pitch to judges in the Wagner Entrepreneurial Center. Finalists take the stage on March 10 in front of judges and families.</p>
+        <p>Every student with a venture can apply. You don’t need to do the Design Sprints, and there’s no application fee. We accept 24 teams. Semifinalists get a bootcamp, then pitch to judges in the Wagner Entrepreneurial Center on February 20 in morning and afternoon cohorts. The top 10 teams get a Finals bootcamp and take the stage on March 10 at the University of Tampa, in front of judges and families, competing for $3,500 in prizes.</p>
       </div>
       <div class="path" aria-label="Patriot Pitch path">
-        <div><div class="d">Jan 31</div><div class="t">Applications due</div><div class="s">Sunday</div></div>
-        <div><div class="d">Feb 3</div><div class="t">Decisions</div><div class="s">Wednesday</div></div>
-        <div><div class="d">Feb 13</div><div class="t">Bootcamp</div><div class="s">Saturday · semifinalists</div></div>
-        <div><div class="d">Feb 20</div><div class="t">Semifinals</div><div class="s">Saturday · AM and PM cohorts</div></div>
-        <div><div class="d">Feb 27</div><div class="t">Finals bootcamp</div><div class="s">Saturday · finalists</div></div>
-        <div class="final"><div class="d">Mar 10</div><div class="t">Finals</div><div class="s">Wednesday · families welcome</div></div>
+        <div><div class="d">24</div><div class="t">Teams accepted</div><div class="s">Decisions Feb 3</div></div>
+        <div><div class="d">Feb 20</div><div class="t">Semifinals</div><div class="s">AM and PM cohorts</div></div>
+        <div><div class="d">10</div><div class="t">Teams advance</div><div class="s">Finals Bootcamp Feb 27</div></div>
+        <div class="final"><div class="d">$3,500</div><div class="t">Finals</div><div class="s">Mar 10 · University of Tampa</div></div>
       </div>
       <form class="notify" id="notifyForm" novalidate>
         <div class="field"><label for="n-email">Get an email when the Pitch application opens</label><input id="n-email" type="email" placeholder="you@carrollwooddayschool.org" required></div>
@@ -451,29 +466,23 @@ footer .ei-full{height:72px;width:auto;background:none;padding:0;border-radius:0
     </div>
   </section>
 
-  <section id="timeline">
-    <div class="wrap">
-      <div class="sec-head"><h2>Full season</h2><p>Every date from application to Finals. Past dates fade out automatically.</p></div>
-      <dl class="tl" id="tl"></dl>
-    </div>
-  </section>
-
   <section id="faq">
     <div class="wrap">
       <div class="sec-head"><h2>Questions</h2><p>Still unsure? Ask Mr. Brennan in Room 162 or on GChat.</p></div>
       <div class="faq">
         <div>
-          <details><summary>Do I need an idea to apply?</summary><p>No. Tell us a problem you care about and choose "Open to a team." Sprints are built for figuring out the idea.</p></details>
-          <details><summary>Can I apply with a team?</summary><p>Yes. Choose "Team," list your teammates, and have each teammate submit their own application.</p></details>
-          <details><summary>How are the 40 chosen?</summary><p>We look at how clearly you describe a problem, why you want to do this, and whether you can attend all six sprints.</p></details>
-          <details><summary>What if I miss a sprint?</summary><p>Life happens. Let Mr. Brennan know ahead of time. Missing more than one may give your spot to someone on the waitlist.</p></details>
+          <details><summary>Do I have to do the Design Sprints to get into Patriot Pitch?</summary><p>No. The sprints are not mandatory, and you can be accepted to Patriot Pitch without them. They do help you build and test your idea so your application is stronger.</p></details>
+          <details><summary>How many teams get into Patriot Pitch?</summary><p>24 teams are accepted to the semifinals on February 20. The top 10 advance to Finals on March 10 at the University of Tampa.</p></details>
+          <details><summary>I’ve pitched before. Can I use my old pitch?</summary><p>No. Returning students are welcome to apply, but you’ll need a new pitch for this year’s Patriot Pitch.</p></details>
+          <details><summary>Does Patriot Pitch cost anything?</summary><p>No. There’s no application fee for Patriot Pitch. The $75 fee is only for Design Sprints, and only if you’re accepted.</p></details>
+          <details><summary>What are the prizes?</summary><p>$3,500 in prizes, awarded at Finals on March 10.</p></details>
         </div>
         <div>
-          <details><summary>Do I have to do the Design Sprints to apply to Patriot Pitch?</summary><p>No. Anyone can apply straight to Patriot Pitch. The sprints are optional. They help you build and test your idea so your application is stronger.</p></details>
-          <details><summary>Does Patriot Pitch cost anything?</summary><p>No. There's no application fee for Patriot Pitch. The $75 fee is only for Design Sprints, and only if you're accepted.</p></details>
-          <details><summary>When do I pay the $75?</summary><p>Only after you're accepted. You'll get a Veracross link on December 1, and payment is due December 8.</p></details>
-          <details><summary>Can my family come watch?</summary><p>Yes. Families are invited to Patriot Pitch Finals on Wednesday, March 10.</p></details>
-          <details><summary>I didn't get a spot. Now what?</summary><p>You're on the waitlist, and spots open up. You can still apply straight to Patriot Pitch by January 31, with no fee.</p></details>
+          <details><summary>Do I need an idea to apply for the sprints?</summary><p>No. Tell us a problem you care about and choose “Open to a team.” Sprints are built for figuring out the idea.</p></details>
+          <details><summary>How are the 40 sprint spots chosen?</summary><p>We look at how clearly you describe a problem, why you want to do this, and whether you can attend all four sprints.</p></details>
+          <details><summary>What if I miss a sprint?</summary><p>Life happens. Let Mr. Brennan know ahead of time. Missing more than one may give your spot to someone on the waitlist.</p></details>
+          <details><summary>When do I pay the $75?</summary><p>Only after you’re accepted to the sprints. You’ll get a Veracross link with your decision on December 19, and payment is due January 6.</p></details>
+          <details><summary>Can my family come watch?</summary><p>Yes. Families are invited to Patriot Pitch Finals on Wednesday, March 10 at the University of Tampa.</p></details>
         </div>
       </div>
     </div>
@@ -504,45 +513,16 @@ const app = initializeApp({
 });
 const db = getFirestore(app);
 
-const DEADLINE = new Date("2026-12-01T04:59:00Z"); // Nov 30, 11:59 pm Eastern
+const DEADLINE = new Date("2026-12-18T04:59:00Z"); // Dec 17, 11:59 pm Eastern
+const PITCH_DUE = new Date("2027-02-01T04:59:00Z"); // Jan 31, 11:59 pm Eastern
 const $ = id => document.getElementById(id);
 $("sealTop").src = $("sealFoot").src;
 
-// countdown
-const msLeft = DEADLINE - new Date();
-const open = msLeft > 0;
-if (!open){ $("daysLeft").textContent = "0"; $("daysLabel").textContent = "Sprint applications are closed"; }
-else { const d = Math.ceil(msLeft / 86400000); $("daysLeft").textContent = d; $("daysLabel").textContent = d === 1 ? "day left to apply" : "days left to apply"; }
-
-// timeline
-const events = [
-  ["2026-11-30","Nov 30","Design Sprint applications due","11:59 pm"],
-  ["2026-12-01","Dec 1","Sprint decisions emailed",""],
-  ["2026-12-02","Dec 2","Design Sprint 01","6–8 pm"],
-  ["2026-12-08","Dec 8","$75 Veracross payment due","Unpaid spots go to the waitlist"],
-  ["2026-12-09","Dec 9","Design Sprint 02","6–8 pm"],
-  ["2027-01-06","Jan 6","Design Sprint 03","6–8 pm"],
-  ["2027-01-13","Jan 13","Design Sprint 04","6–8 pm"],
-  ["2027-01-20","Jan 20","Design Sprint 05","6–8 pm"],
-  ["2027-01-27","Jan 27","Design Sprint 06","6–8 pm · last sprint"],
-  ["2027-01-31","Jan 31","Patriot Pitch applications due",""],
-  ["2027-02-03","Feb 3","Patriot Pitch decisions",""],
-  ["2027-02-13","Feb 13","Semifinal bootcamp",""],
-  ["2027-02-20","Feb 20","Semifinals","Wagner Entrepreneurial Center"],
-  ["2027-02-27","Feb 27","Finals bootcamp",""],
-  ["2027-03-10","Mar 10","Patriot Pitch Finals","Families welcome"]
-];
-const today = new Date(); today.setHours(0,0,0,0);
-let marked = false; const tl = $("tl");
-events.forEach(([iso,label,title,sub])=>{
-  const past = new Date(iso+"T23:59:00") < today;
-  const cls = past ? "past" : (!marked ? (marked = true, "next") : "");
-  const a = document.createElement("dt"); a.textContent = label;
-  const b = document.createElement("dd"); const bb = document.createElement("b"); bb.textContent = title; b.appendChild(bb);
-  if (sub){ const sp = document.createElement("span"); sp.textContent = sub; b.appendChild(sp); }
-  if (cls){ a.className = cls; b.className = cls; }
-  tl.append(a,b);
-});
+// countdown (hero shows days until Patriot Pitch applications are due)
+const open = DEADLINE - new Date() > 0;
+const pitchLeft = PITCH_DUE - new Date();
+if (pitchLeft <= 0){ $("daysLeft").textContent = "0"; $("daysLabel").textContent = "Patriot Pitch applications are closed"; }
+else { const d = Math.ceil(pitchLeft / 86400000); $("daysLeft").textContent = d; $("daysLabel").textContent = d === 1 ? "day until Pitch applications are due" : "days until Pitch applications are due"; }
 
 // form helpers
 const form = $("appForm");
@@ -556,7 +536,7 @@ form.querySelectorAll('input[name=team]').forEach(r=>r.addEventListener("change"
 const dateBoxes = [...form.querySelectorAll('input[name=dates]')];
 dateBoxes.forEach(b=>b.addEventListener("change",()=>{
   const n = dateBoxes.filter(x=>x.checked).length;
-  $("dates-note").textContent = n === 6 ? "All six. That's what we're looking for." : "Spots go first to students who can make all six. You've checked " + n + ".";
+  $("dates-note").textContent = n === 4 ? "All four. That's what we're looking for." : "Spots go first to students who can make all four. You've checked " + n + ".";
 }));
 function collect(){
   const v = id => $(id).value.trim();
@@ -591,7 +571,7 @@ function setStatus(kind, text){ const s = $("appStatus"); s.className = "status 
 
 if (!open){
   form.querySelectorAll("input,select,textarea,button").forEach(e=>e.disabled = true);
-  setStatus("info","Sprint applications closed on November 30. You can still get notified about Patriot Pitch below.");
+  setStatus("info","Sprint applications closed on December 17. You can still apply directly to Patriot Pitch by January 31.");
 }
 
 let sending = false;
@@ -604,7 +584,7 @@ form.addEventListener("submit", async e=>{
   try {
     await addDoc(collection(db, "applications"), Object.assign({}, d, { submittedAt: serverTimestamp() }));
     form.classList.add("hidden"); $("doneBox").classList.remove("hidden");
-    $("doneText").textContent = "Thanks, " + (d.name.split(" ")[0] || "there") + ". We have your application. Decisions go out Tuesday, December 1 to " + d.email + ".";
+    $("doneText").textContent = "Thanks, " + (d.name.split(" ")[0] || "there") + ". We have your application. Decisions go out December 19 to " + d.email + ".";
     setStatus("good", "Application received.");
     $("doneBox").focus();
   } catch(err){
