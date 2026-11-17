@@ -54,7 +54,7 @@ td.long{min-width:240px;max-width:380px}
   </div>
   <div class="meter">
     <div><b id="nApps">0</b><span>applications for 40 spots</span></div>
-    <div><b id="nSix">0</b><span>can make all six sprints</span></div>
+    <div><b id="nSix">0</b><span>can make all four sprints</span></div>
     <div><b id="nPitch">0</b><span>want Patriot Pitch updates</span></div>
   </div>
   <p class="msg" id="msg" role="status"></p>
@@ -90,13 +90,13 @@ const when = t => t && t.toDate ? t.toDate().toLocaleString([], {month:"short",d
 
 function render(){
   $("nApps").textContent = new Set(rows.map(r=>r.email)).size;
-  $("nSix").textContent = rows.filter((r,i)=>rows.findIndex(x=>x.email===r.email)===i && (r.dates||[]).length===6).length;
+  $("nSix").textContent = rows.filter((r,i)=>rows.findIndex(x=>x.email===r.email)===i && (r.dates||[]).length===4).length;
   if (!rows.length){ $("rows").innerHTML = '<tr><td colspan="10">No applications yet.</td></tr>'; return; }
   const seen = new Set();
   $("rows").innerHTML = rows.map(r=>{
     const dup = seen.has(r.email); seen.add(r.email);
     const n = (r.dates||[]).length;
-    return "<tr"+(dup?" class='dup'":"")+"><td>"+esc(when(r.submittedAt))+"</td><td><b>"+esc(r.name)+"</b></td><td>"+esc(r.grade)+"</td><td>"+esc(r.email)+"</td><td>"+esc(r.team)+(r.teammates?"<br><span class='hint'>"+esc(r.teammates)+"</span>":"")+"</td><td><span class='pill "+(n===6?"ok":"warn")+"'>"+n+"/6</span><br><span class='hint'>"+esc((r.dates||[]).join(", "))+"</span></td><td class='long'>"+esc(r.idea)+"</td><td class='long'>"+esc(r.why)+(r.experience?"<br><span class='hint'>Experience: "+esc(r.experience)+"</span>":"")+"</td><td>"+esc(r.pitchPlan)+"</td><td>"+esc(r.parentName)+"<br><span class='hint'>"+esc(r.parentEmail)+"</span></td></tr>";
+    return "<tr"+(dup?" class='dup'":"")+"><td>"+esc(when(r.submittedAt))+"</td><td><b>"+esc(r.name)+"</b></td><td>"+esc(r.grade)+"</td><td>"+esc(r.email)+"</td><td>"+esc(r.team)+(r.teammates?"<br><span class='hint'>"+esc(r.teammates)+"</span>":"")+"</td><td><span class='pill "+(n===4?"ok":"warn")+"'>"+n+"/4</span><br><span class='hint'>"+esc((r.dates||[]).join(", "))+"</span></td><td class='long'>"+esc(r.idea)+"</td><td class='long'>"+esc(r.why)+(r.experience?"<br><span class='hint'>Experience: "+esc(r.experience)+"</span>":"")+"</td><td>"+esc(r.pitchPlan)+"</td><td>"+esc(r.parentName)+"<br><span class='hint'>"+esc(r.parentEmail)+"</span></td></tr>";
   }).join("");
 }
 
